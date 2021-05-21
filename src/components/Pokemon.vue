@@ -3,9 +3,11 @@
         <div class="card">
             <div class="card-image">
                 <figure>
-                <img :src="currentImg" alt="Placeholder image">
+                <img :src="currentImg" @mouseover="mudarSprite" @mouseleave="mudarSprite" alt="Placeholder image">
+                <img :src="currentShiny" @mouseover="mudarSpriteShiny" @mouseleave="mudarSpriteShiny" alt="Placeholder image">
                 </figure>
             </div>
+
             <div class="card-content">
                 <div class="media">
                 <div class="media-content">
@@ -35,14 +37,19 @@ export default {
             }
             this.pokemon.front = res.data.sprites.front_default;
             this.pokemon.back = res.data.sprites.back_default;
+            this.pokemon.frontShiny = res.data.sprites.front_shiny;
+            this.pokemon.backShiny = res.data.sprites.back_shiny;
             this.currentImg = this.pokemon.front;
+            this.currentShiny = this.pokemon.frontShiny;
             // console.log(this.pokemon);
         })
     },
     data(){
         return{
             isFront: true,
+            hover: false,
             currentImg: '',
+            currentShiny: '',
             pokemon: {
                 type1: '',
                 type2: '',
@@ -73,7 +80,15 @@ export default {
                 this.isFront = true;
                 this.currentImg = this.pokemon.front;
             }
-            
+        },
+        mudarSpriteShiny: function(){
+            if(this.isFront){
+                this.isFront = false;
+                this.currentShiny = this.pokemon.backShiny;
+            } else {
+                this.isFront = true;
+                this.currentShiny = this.pokemon.frontShiny;
+            }
         }
     }
 }
