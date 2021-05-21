@@ -1,5 +1,5 @@
 <template>
-    <div id="pokemon">
+    <div class="mt-2">
         <div class="card">
             <div class="card-image">
                 <figure>
@@ -10,7 +10,7 @@
                 <div class="media">
                 <div class="media-content">
                     <p class="title is-4">{{num}} - {{name | upper}}</p>
-                    <p class="subtitle is-6">{{pokemon.type}}</p>
+                    <p class="subtitle is-6">{{pokemon.type1}} {{pokemon.type2}}</p>
                 </div>
                 </div>
 
@@ -27,18 +27,26 @@ import axios from 'axios';
 export default {
     created: function(){
         axios.get(this.url).then(res => {
-            this.pokemon.type = res.data.types[0].type.name;
+            
+            this.pokemon.type1 = res.data.types[0].type.name;
+            if(res.data.types.length > 1){
+                this.pokemon.type2 = res.data.types[1].type.name;
+            }
+            
             this.pokemon.front = res.data.sprites.front_default;
             this.pokemon.back = res.data.sprites.back_default;
-            console.log(this.pokemon);
+            // console.log(this.pokemon);
         })
     },
     data(){
         return{
             pokemon: {
-                type: '',
+                type1: '',
+                type2: '',
                 front: '',
-                back: ''
+                back: '',
+                frontShiny: '',
+                backShiny: ''
             }
         }
     },
@@ -57,7 +65,5 @@ export default {
 </script>
 
 <style>
-    #pokemon{
-        margin-top: 2%;
-    }
+
 </style>
