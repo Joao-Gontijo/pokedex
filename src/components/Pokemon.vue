@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-4">
+    <div class="mt-4 ">
         <div class="card">
             <div class="card-image">
                 <figure>
@@ -11,13 +11,13 @@
             <div class="card-content">
                 <div class="media">
                 <div class="media-content">
-                    <p class="title is-4">{{num}} - {{name | upper}}</p>
+                    <p class="title is-4">{{pokemon.dexNumber}} - {{name | upper}}</p>
                     <p class="subtitle is-6">{{pokemon.type1}} {{pokemon.type2}}</p>
                 </div>
                 </div>
 
                 <div class="content">
-                    <button class="button is-fullwidth" @click="mudarSprite">Mudar sprite</button>
+                    <button class="button is-fullwidth" @click="mostrarEntry">Entries</button>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@ import axios from 'axios';
 export default {
     created: function(){
         axios.get(this.url).then(res => {
-            
+
             this.pokemon.type1 = res.data.types[0].type.name;
             if(res.data.types.length > 1){
                 this.pokemon.type2 = res.data.types[1].type.name;
@@ -41,7 +41,15 @@ export default {
             this.pokemon.backShiny = res.data.sprites.back_shiny;
             this.currentImg = this.pokemon.front;
             this.currentShiny = this.pokemon.frontShiny;
-            // console.log(this.pokemon);
+            this.pokemon.dexNumber = res.data.id;
+
+            axios.get(res.data.species.url).then(res => {
+                for (let index = 0; index < res.data.flavor_text_entries.length; index++) {
+                    if(res.data.flavor_text_entries[index].language.name == 'en'){
+                        this.pokemon.description = res.data.flavor_text_entries[index].flavor_text
+                    }
+                }
+            })
         })
     },
     data(){
@@ -56,7 +64,9 @@ export default {
                 front: '',
                 back: '',
                 frontShiny: '',
-                backShiny: ''
+                backShiny: '',
+                description: '',
+                dexNumber: Number
             }
         }
     },
@@ -89,11 +99,17 @@ export default {
                 this.isFront = true;
                 this.currentShiny = this.pokemon.frontShiny;
             }
+        },
+        mostrarEntry: function(){
+            console.log(this.pokemon.description);
+
         }
     }
 }
 </script>
 
 <style>
-
+.column-wrapper{
+    column-count: 4;
+}
 </style>

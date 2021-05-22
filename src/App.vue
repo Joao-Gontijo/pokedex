@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     
-    <div class="column is-half is-offset-one-quarter">
+    <div class="column">
       <figure >
         <img src="./assets/pokemon-logo.png">
       </figure>
@@ -10,8 +10,10 @@
       <h4>Pokédex</h4>
       <input class="input is-rounded" type="text" name="" id="" placeholder="Buscar Pokémon pelo nome" v-model="busca">
       <button class="button is-fullwidth is-success mt-4" @click="buscar">Buscar</button>
-      <div v-for="(poke,index) in filteredPokemons" :key="poke.url">
-        <Pokemon :name="poke.name" :url="poke.url" :num="index+1"/>
+      <div class="columns  is-multiline">
+      <div class="column is-one-quarter" v-for="(poke) in filteredPokemons" :key="poke.url">
+        <Pokemon :name="poke.name" :url="poke.url" :num="poke.id+1"/>
+      </div>
       </div>
     </div>
     
@@ -69,6 +71,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  background-color: rgb(184, 73, 73);
 }
 </style>
