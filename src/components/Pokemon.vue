@@ -17,7 +17,22 @@
                 </div>
 
                 <div class="content">
-                    <button class="button is-fullwidth" @click="mostrarEntry">Entries</button>
+                    <button class="button is-fullwidth" @click="showEntry = true">Entries</button>
+                </div>
+                <div class="modal" v-bind:class="{'is-active': showEntry}">
+                    <div class="modal-background" v-on:click="showEntry = false"></div>
+                    <div class="modal-card">
+                        <header class="modal-card-head">
+                        <p class="modal-card-title">{{pokemon.nome}}</p>
+                        <button class="delete" aria-label="close" v-on:click="showEntry = false"></button>
+                        </header>
+                        <section class="modal-card-body">
+                            {{pokemon.description}}
+                        </section>
+                        <footer class="modal-card-foot">
+                        <button class="button" v-on:click="showEntry = false">Cancel</button>
+                        </footer>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,6 +46,7 @@ export default {
     created: function(){
         axios.get(this.url).then(res => {
 
+            this.pokemon.nome = res.data.forms[0].name;
             this.pokemon.type1 = res.data.types[0].type.name;
             if(res.data.types.length > 1){
                 this.pokemon.type2 = res.data.types[1].type.name;
@@ -54,11 +70,13 @@ export default {
     },
     data(){
         return{
+            showEntry: false,
             isFront: true,
             hover: false,
             currentImg: '',
             currentShiny: '',
             pokemon: {
+                nome: '',
                 type1: '',
                 type2: '',
                 front: '',
@@ -100,10 +118,10 @@ export default {
                 this.currentShiny = this.pokemon.frontShiny;
             }
         },
-        mostrarEntry: function(){
-            console.log(this.pokemon.description);
+        // mostrarEntry: function(){
+        //     console.log(this.pokemon.description);
 
-        }
+        // }
     }
 }
 </script>
@@ -112,4 +130,7 @@ export default {
 .column-wrapper{
     column-count: 4;
 }
+ *:first-letter{
+     text-transform: capitalize;
+ }
 </style>
