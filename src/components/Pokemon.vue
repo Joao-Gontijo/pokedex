@@ -12,7 +12,10 @@
                 <div class="media">
                 <div class="media-content">
                     <p class="title is-4">{{pokemon.dexNumber}} - {{name | upper}}</p>
-                    <p class="subtitle is-6">{{pokemon.type1}} {{pokemon.type2}}</p>
+                    <button class="button">
+                        <p class="subtitle is-6">{{pokemon.type1}}</p></button>
+                    <button class="button" v-if="pokemon.type2">
+                        <p class="subtitle is-6">{{pokemon.type2}}</p></button>
                 </div>
                 </div>
 
@@ -117,11 +120,7 @@ export default {
                 this.isFront = true;
                 this.currentShiny = this.pokemon.frontShiny;
             }
-        },
-        // mostrarEntry: function(){
-        //     console.log(this.pokemon.description);
-
-        // }
+        }
     }
 }
 </script>
