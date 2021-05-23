@@ -51,8 +51,8 @@ import axios from 'axios';
 export default {
     created: function(){
         axios.get(this.url).then(res => {
-
-            this.pokemonImg = res.data.sprites.other.dream_world.front_default;
+            
+            this.pokemonImg = res.data.sprites.other.["official-artwork"].front_default; //aponta um erro de i
             this.pokemon.nome = res.data.forms[0].name;
             this.pokemon.type1 = res.data.types[0].type.name;
             if(res.data.types.length > 1){
@@ -66,13 +66,15 @@ export default {
             this.currentShiny = this.pokemon.frontShiny;
             this.pokemon.dexNumber = res.data.id;
 
+
             axios.get(res.data.species.url).then(res => {
                 for (let index = 0; index < res.data.flavor_text_entries.length; index++) {
                     if(res.data.flavor_text_entries[index].language.name == 'en'){
                         this.pokemon.description = res.data.flavor_text_entries[index].flavor_text
                     }
                 }
-            })
+                this.pokemon.generation = res.data.generation.name;
+            });
         })
     },
     data(){
@@ -94,7 +96,8 @@ export default {
                 frontShiny: '',
                 backShiny: '',
                 description: '',
-                dexNumber: Number
+                dexNumber: Number,
+                generation: ''
             },
             tiposCor: {
                     normal: "#A8A878",
@@ -158,24 +161,6 @@ export default {
                     this.backgroundcolor2 = value;
                 }
             }
-            // for (let index = 0; index < this.tiposCor; index++) {
-            //     if(this.pokemon.type1 === this.tiposCor[index]){
-            //         this.backgroundcolor = this.tiposCor[index];
-            //     }
-            // }
-
-            // if(this.pokemon.type1 === "grass"){
-            //     this.backgroundcolor = this.tiposCor.grass;
-            // }
-            // if(this.pokemon.type2 === "grass"){
-            //     this.backgroundcolor2 = this.tiposCor.grass;
-            // }
-            // if(this.pokemon.type1 === "fire"){
-            //     this.backgroundcolor = this.tiposCor.fire;
-            // }
-            // if(this.pokemon.type2 === "poison"){
-            //     this.backgroundcolor2 = this.tiposCor.poison;
-            // }
         }
     }
 }

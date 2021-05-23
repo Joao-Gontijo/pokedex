@@ -8,7 +8,7 @@
       
       <hr>
       <h4>Pokédex - João Gontijo</h4>
-      <input class="input is-rounded mt-4" type="text" name="" id="" placeholder="Buscar Pokémon pelo nome" v-model="busca">
+      <input class="input is-rounded mt-4" type="text" placeholder="Buscar Pokémon pelo nome" v-model="busca">
       <button class="button is-fullwidth is-success mt-4" @click="buscar">Buscar</button>
       <div class="columns  is-multiline">
       <div class="column is-one-quarter" v-for="(poke) in filteredPokemons" :key="poke.url">
@@ -47,7 +47,7 @@ export default {
       if(this.busca == '' || this.busca == ' '){
           this.filteredPokemons = this.pokemons;
       } else {
-        this.filteredPokemons = this.pokemons.filter(pokemon => pokemon.name == this.busca);
+        this.filteredPokemons = this.pokemons.filter(pokemon => pokemon.name == this.busca.toLowerCase());
       }
     }
   },
@@ -56,7 +56,7 @@ export default {
     //   if(this.busca == '' || this.busca == ' '){
     //     return this.pokemons;
     //   } else {
-    //       return this.pokemons.filter(pokemon => pokemon.name == this.busca)
+    //     return this.pokemons.filter(pokemon => pokemon.name == this.busca);
     //   }
     // }
 
