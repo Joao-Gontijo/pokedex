@@ -1,20 +1,19 @@
 <template>
     <div class="mt-4 ">
-        <div class="card">
+        <div class="card" :style="{backgroundColor: backgroundcolor}" style="background: linear-gradient()">
             <div class="card-image">
                 <figure>
-                <img :src="currentImg" @mouseover="mudarSprite" @mouseleave="mudarSprite" alt="Placeholder image">
-                <img :src="currentShiny" @mouseover="mudarSpriteShiny" @mouseleave="mudarSpriteShiny" alt="Placeholder image">
+                    <img :src="pokemonImg" style="margin-left:auto; margin-right:auto; padding-top: 5px" class="image is-128x128" alt="Placeholder image">
                 </figure>
             </div>
 
             <div class="card-content">
-                <div class="media">
+                <div class="media" v-bind="mudarCorTipo()">
                 <div class="media-content">
                     <p class="title is-4">{{pokemon.dexNumber}} - {{name | upper}}</p>
-                    <button class="button">
+                    <button id="btnTipo"  :style="{backgroundColor: backgroundcolor}" class="button">
                         <p class="subtitle is-6">{{pokemon.type1}}</p></button>
-                    <button class="button" v-if="pokemon.type2">
+                    <button id="btnTipo" :style="{backgroundColor: backgroundcolor2}" class="button" v-if="pokemon.type2">
                         <p class="subtitle is-6">{{pokemon.type2}}</p></button>
                 </div>
                 </div>
@@ -25,14 +24,18 @@
                 <div class="modal" v-bind:class="{'is-active': showEntry}">
                     <div class="modal-background" v-on:click="showEntry = false"></div>
                     <div class="modal-card">
-                        <header class="modal-card-head">
+                        <header class="modal-card-head" :style="{backgroundColor: backgroundcolor}">
                         <p class="modal-card-title">{{pokemon.nome}}</p>
                         <button class="delete" aria-label="close" v-on:click="showEntry = false"></button>
                         </header>
-                        <section class="modal-card-body">
+                        <section class="modal-card-body" >
+                            <figure>
+                                <img :src="currentImg" @mouseover="mudarSprite" @mouseleave="mudarSprite" alt="Placeholder image">
+                                <img :src="currentShiny" @mouseover="mudarSpriteShiny" @mouseleave="mudarSpriteShiny" alt="Placeholder image">
+                            </figure>
                             {{pokemon.description}}
                         </section>
-                        <footer class="modal-card-foot">
+                        <footer class="modal-card-foot" :style="{backgroundColor: backgroundcolor}">
                         <button class="button" v-on:click="showEntry = false">Cancel</button>
                         </footer>
                     </div>
@@ -49,6 +52,7 @@ export default {
     created: function(){
         axios.get(this.url).then(res => {
 
+            this.pokemonImg = res.data.sprites.other.dream_world.front_default;
             this.pokemon.nome = res.data.forms[0].name;
             this.pokemon.type1 = res.data.types[0].type.name;
             if(res.data.types.length > 1){
@@ -76,8 +80,11 @@ export default {
             showEntry: false,
             isFront: true,
             hover: false,
+            pokemonImg: '',
             currentImg: '',
             currentShiny: '',
+            backgroundcolor: '',
+            backgroundcolor2: '',
             pokemon: {
                 nome: '',
                 type1: '',
@@ -88,6 +95,26 @@ export default {
                 backShiny: '',
                 description: '',
                 dexNumber: Number
+            },
+            tiposCor: {
+                    normal: "#A8A878",
+                    fighting: "#C03028",
+                    flying: "#A890F0",
+                    electric: "#F8D030",
+                    ground: "#E0C068",
+                    psychic: "#F85888",
+                    rock: "#B8A038",
+                    ice: "#98D8D8",
+                    dragon: "#7038F8",
+                    ghost: "#705898",
+                    dark: "#705848",
+                    steel: "#B8B8D0",
+                    fairy: "#EE99AC",
+                    grass: "#78C850",
+                    fire: "#F08030",
+                    water: "#6890F0",
+                    poison: "#A040A0",
+                    bug: "#A8B820",
             }
         }
     },
@@ -120,6 +147,35 @@ export default {
                 this.isFront = true;
                 this.currentShiny = this.pokemon.frontShiny;
             }
+            
+        },
+        mudarCorTipo: function(){
+            for (var [key, value] of Object.entries(this.tiposCor)){
+                if(this.pokemon.type1 === key){
+                    this.backgroundcolor = value;
+                }
+                if(this.pokemon.type2 === key){
+                    this.backgroundcolor2 = value;
+                }
+            }
+            // for (let index = 0; index < this.tiposCor; index++) {
+            //     if(this.pokemon.type1 === this.tiposCor[index]){
+            //         this.backgroundcolor = this.tiposCor[index];
+            //     }
+            // }
+
+            // if(this.pokemon.type1 === "grass"){
+            //     this.backgroundcolor = this.tiposCor.grass;
+            // }
+            // if(this.pokemon.type2 === "grass"){
+            //     this.backgroundcolor2 = this.tiposCor.grass;
+            // }
+            // if(this.pokemon.type1 === "fire"){
+            //     this.backgroundcolor = this.tiposCor.fire;
+            // }
+            // if(this.pokemon.type2 === "poison"){
+            //     this.backgroundcolor2 = this.tiposCor.poison;
+            // }
         }
     }
 }
@@ -131,5 +187,9 @@ export default {
 }
  *:first-letter{
      text-transform: capitalize;
+ }
+ #btnTipo{
+    border: 2px solid black; 
+    pointer-events: none;
  }
 </style>
