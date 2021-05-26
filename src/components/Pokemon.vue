@@ -52,7 +52,7 @@ export default {
     created: function(){
         axios.get(this.url).then(res => {
             
-            this.pokemonImg = res.data.sprites.other.["official-artwork"].front_default; //aponta um erro de i
+            this.pokemonImg = res.data.sprites.other.["official-artwork"].front_default; //aponta um erro de identificador
             this.pokemon.nome = res.data.forms[0].name;
             this.pokemon.type1 = res.data.types[0].type.name;
             if(res.data.types.length > 1){
