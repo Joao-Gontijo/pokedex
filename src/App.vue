@@ -49,7 +49,6 @@ export default {
   },
   methods:{
     checkName(){
-      console.log(`Checking name: ${this.keyword}`);
       this.filteredPokemons = this.pokemons;
       if(this.keyword == '' || this.busca == ' '){
         this.filteredPokemons = this.pokemons;
@@ -67,7 +66,7 @@ export default {
   computed:{
     filteredPoke: function(){
       return this.pokemons.filter((pokemon)=>{
-        return pokemon.name.match(this.keyword);
+        return pokemon.name.match(this.keyword.toLowerCase());
       })
     }
   }
@@ -82,5 +81,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: rgb(184, 73, 73);
+}
+html{
+  background-color: rgb(184, 73, 73) !important;
 }
 </style>
